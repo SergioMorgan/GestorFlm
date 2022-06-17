@@ -8,14 +8,37 @@ use App\Models\Action;
 class ActionController extends Controller
 {
     public function index () {
-        $actions = Action::paginate(10);
+        $actions = Action::orderBy('created_at', 'desc')->paginate(10);
         return view('actions.index',['actions' => $actions]);
     }
 
     public function create () {
-        return view('actions.create');    }
+        return view('actions.create');
+    }
 
-    public function show ($id) {
-        $action = Action::find($id);
-        return view('actions.show', ['action' => $action]);    }
+    public function store (Request $request) {
+        $action = New Action();
+        $action->siomid     = $request->siomid;
+        $action->username   = $request->username;
+        $action->detalle    = $request->detalle;
+        $action->save();
+        return redirect()->route('actions.show', $action);
+    }
+
+    public function show (Action $action) {
+        return view('actions.show', ['action' => $action]);
+    }
+
+    public function edit(Action $action) {
+        return view('actions.edit', ['action' => $action]);
+    }
+
+    public function update(Request $request, Action $action) {
+        $action->siomid     = $request->siomid;
+        $action->username   = $request->username;
+        $action->detalle    = $request->detalle;
+        $action->save();
+        return redirect()->route('actions.show', $action);
+    }
+
 }

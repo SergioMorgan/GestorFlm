@@ -3,7 +3,9 @@
 @section('title', 'Mostrar ticket ' . $osticket->siomid )
 
 @section('content')
-    <h1>pagina que un ticket especifico: {{ $osticket->siomid }}</h1>
-    <p><strong>Tipo: </strong> {{ $osticket->descripcion }} </p>
-    <a href=" {{ route('ostickets.index') }} ">Volver a tickets</a>
+    <h1>Pagina que un ticket especifico:  {{$osticket->siomid}}</h1>
+    <a href="{{ route('ostickets.index') }}">Volver a tickets</a>
+    <br>
+    <a href="{{ route('ostickets.edit', $osticket) }}">Editar ticket</a>
+    <p><strong>Tipo: </strong>{{$osticket->descripcion}}</p>
 @endsection()
