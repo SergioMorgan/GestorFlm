@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Casts\Attribute; //para los mutadores
 
 class User extends Authenticatable
 {
@@ -44,10 +44,31 @@ class User extends Authenticatable
     ];
 
     protected function name (): Attribute {
+
         return new Attribute(
-            set: function($value) {
-                return strtolower($value);
-            }
+
+            //accesor para convertir primera letra a mayusculas
+            // get: function($value) {
+            //     return ucwords($value);
+            // },
+
+            get: fn($value) => ucwords($value),
+
+            //mutador para normalizar el nombre en formato minusculas
+            // set: function($value) {
+            //     return strtolower($value);
+            // }
+
+            set: fn($value) => strtolower($value),
         );
     }
+
+    // EN VERSIONES ANTERIORES ACCESOR Y MUTADOR
+    // public function getNameAttribute($value) {
+    //     return ucwords($value);
+    // }
+    // public function setNameAttribute($value) {
+    //     $this->attributes['name'] = strtolower($value);
+    // }
+
 }
