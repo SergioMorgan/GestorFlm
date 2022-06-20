@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Site;
+use Illuminate\Auth\Events\Validated;
 use Symfony\Contracts\Service\Attribute\Required;
+use App\Http\Requests\StoreSite;
 
 class SiteController extends Controller
 {
@@ -19,13 +21,20 @@ class SiteController extends Controller
     public function create () {
         return view('sites.create');    }
 
-    public function store (Request $request) {
-        $site = New Site();
-        $site->localid  = $request->localid;
-        $site->nombre   = $request->nombre;
-        $site->zonal    = $request->zonal;
-        $site->estado   = $request->estado;
-        $site->save();
+    public function store (StoreSite $request) {
+        // $site = New Site();
+        // $site->localid  = $request->localid;
+        // $site->nombre   = $request->nombre;
+        // $site->zonal    = $request->zonal;
+        // $site->estado   = $request->estado;
+        // $site->save();
+
+        // podemos reemplazar la asignacion anterior con una asignacion masiva
+        // este metetodo crea una instancia de la clase Site y le va a agregar las propiedades
+        // para luego grabarlas en los respectivos campos (excepto el token)
+        // al crearse las propiedades de forma dinamica, hay que agregar los campos  que queremos que
+        // el usuario llene dentro del archivo model, agregar propiedad fillable con la lista de campos
+        $site = Site::create($request->all());
         return redirect()->route('sites.show', $site);
     }
 
@@ -37,13 +46,31 @@ class SiteController extends Controller
         return view('sites.edit', ['site' => $site]);
     }
 
-    public function update(Request $request, Site $site) {
-        $site->localid  = $request->localid;
-        $site->nombre   = $request->nombre;
-        $site->zonal    = $request->zonal;
-        $site->estado   = $request->estado;
-        $site->save();
+    // para que la funcion siga las reglas definidas en el store, debemos cambiar el alcance de Request por el store
+    // public function update(Request $request, Site $site) {
+    public function update(StoreSite $request, Site $site) {
+
+        // aplicamos reglas de validacion
+        // $request->validate([
+        //     'localid'   => 'required',
+        //     'nombre'   => 'required',
+        //     'zonal'     => 'required',
+        //     'estado'    => 'required',
+        // ]);
+
+        // $site->localid  = $request->localid;
+        // $site->nombre   = $request->nombre;
+        // $site->zonal    = $request->zonal;
+        // $site->estado   = $request->estado;
+        // $site->save();
+
+       // al igual que en create, vamos a hacer la misma asignacion masiva en update
+        $site->update($request->all());
         return redirect()->route('sites.show', $site);
     }
 
+    public function destroy(Site $site){
+        $site->delete();
+        return redirect()->route('sites.index', $site);
+    }
 }

@@ -8,4 +8,10 @@
     <br>
     <a href="{{ route('sites.edit', $site) }}">Editar local</a>
     <p><strong>Tipo: </strong>{{$site->estado}}</p>
+
+    <form action="{{ route('sites.destroy', $site) }}" method="POST">
+        @csrf
+        @method("delete")
+        <button type="submit">Eliminar</button>
+    </form>
 @endsection()

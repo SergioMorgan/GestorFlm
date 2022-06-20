@@ -11,28 +11,48 @@
         <label>
             ID de local
             <br>
-            <input type="text" name="localid" value="{{ $site->localid }}">
+            <input type="text" name="localid" value="{{ old('localid', $site->localid) }}">
+            @error('localid')
+            <br>
+            <small>{{$message}}</small>
+            <br>
+        @enderror
         </label>
 
         <br>
         <label>
             Nombre
             <br>
-            <input type="text" name="nombre" value="{{ $site->nombre }}">
+            <input type="text" name="nombre" value="{{ old('nombre', $site->nombre) }}">
+            @error('nombre')
+            <br>
+            <small>{{$message}}</small>
+            <br>
+        @enderror
         </label>
 
         <br>
         <label>
             Zonal
             <br>
-            <input type="text" name="zonal" value="{{ $site->zonal }}">
+            <input type="text" name="zonal" value="{{ old('zonal', $site->zonal) }}">
+            @error('zonal')
+            <br>
+            <small>{{$message}}</small>
+            <br>
+        @enderror
         </label>
 
         <br>
         <label>
             Estado
             <br>
-            <input type="text" name="estado" value="{{ $site->estado }}">
+            <input type="text" name="estado" value="{{ old('estado', $site->estado) }}">
+            @error('estado')
+            <br>
+            <small>{{$message}}</small>
+            <br>
+        @enderror
         </label>
         <br>
         <button type="submit">Actualizar</button>
